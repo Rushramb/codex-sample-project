@@ -1,0 +1,17 @@
+{
+  "name": "@inbox/cli",
+  "version": "0.1.0",
+  "bin": {
+    "inbox": "dist/index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@inbox/gmail": "*",
+    "@inbox/slack": "*",
+    "@inbox/storage": "*"
+  }
+}

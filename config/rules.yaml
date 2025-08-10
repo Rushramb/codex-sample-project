@@ -1,0 +1,14 @@
+- conditions:
+    sender: 'boss@example.com'
+  actions:
+    category: 'Reply'
+    labels: ['IMPORTANT']
+- conditions:
+    labels: ['NEWSLETTER']
+  actions:
+    category: 'Archive'
+- conditions:
+    channel: 'slack'
+    keywords: ['review']
+  actions:
+    category: 'Defer'
