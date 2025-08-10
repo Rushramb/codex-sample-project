@@ -1,0 +1,9 @@
+{
+  "files": [],
+  "references": [
+    {"path": "packages/cli"},
+    {"path": "packages/integrations/gmail"},
+    {"path": "packages/integrations/slack"},
+    {"path": "packages/storage"}
+  ]
+}
