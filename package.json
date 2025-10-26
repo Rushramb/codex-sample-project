@@ -1,0 +1,37 @@
+{
+  "name": "personal-financial-analyst",
+  "version": "1.0.0",
+  "description": "Sophisticated personal financial analyst for expense tracking, spending pattern analysis, and budget optimization",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write 'src/**/*.ts'"
+  },
+  "keywords": [
+    "finance",
+    "budgeting",
+    "expense-tracking",
+    "financial-analysis",
+    "budget-optimization",
+    "personal-finance"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "date-fns": "^2.30.0"
+  }
+}
