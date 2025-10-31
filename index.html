@@ -10,7 +10,12 @@
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
           crossorigin=""/>
 
-    <!-- Custom CSS for full-screen map -->
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Custom CSS -->
     <style>
         * {
             margin: 0;
@@ -21,7 +26,7 @@
         body, html {
             height: 100%;
             width: 100%;
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         #map {
@@ -29,32 +34,341 @@
             width: 100%;
         }
 
+        /* Search Panel */
+        .search-panel {
+            position: absolute;
+            top: 20px;
+            left: 60px;
+            z-index: 1000;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            min-width: 320px;
+        }
+
+        .search-panel h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .search-results {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        .search-result-item {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-result-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            font-size: 12px;
+        }
+
+        .result-info {
+            flex: 1;
+        }
+
+        .result-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .result-category {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: capitalize;
+        }
+
+        /* Info Panel */
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .info-panel h4 {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+        }
+
+        .info-panel p {
+            margin: 4px 0;
+            font-size: 12px;
+        }
+
         /* Custom popup styling */
         .leaflet-popup-content-wrapper {
             border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
         .leaflet-popup-content {
             margin: 15px;
             font-size: 14px;
+            min-width: 200px;
+        }
+
+        .popup-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .popup-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: white;
+            font-size: 16px;
         }
 
         .popup-title {
             font-weight: bold;
             font-size: 16px;
-            margin-bottom: 8px;
             color: #2c3e50;
+            flex: 1;
+        }
+
+        .popup-category {
+            display: inline-block;
+            padding: 3px 8px;
+            background: #ecf0f1;
+            border-radius: 12px;
+            font-size: 11px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
         .popup-description {
             color: #555;
             line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .popup-coordinates {
+            font-size: 11px;
+            color: #95a5a6;
+            font-family: monospace;
+            padding: 6px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            margin-top: 8px;
+        }
+
+        .drag-hint {
+            font-size: 11px;
+            color: #3498db;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        /* Custom markers with 3D effect */
+        .custom-marker {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3),
+                        inset 0 2px 4px rgba(255,255,255,0.3),
+                        inset 0 -2px 4px rgba(0,0,0,0.2);
+            cursor: move;
+            transition: all 0.3s ease;
+        }
+
+        .custom-marker:hover {
+            transform: rotate(-45deg) scale(1.15);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4),
+                        inset 0 2px 4px rgba(255,255,255,0.3),
+                        inset 0 -2px 4px rgba(0,0,0,0.2);
+        }
+
+        .custom-marker i {
+            transform: rotate(45deg);
+            font-size: 18px;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .marker-pulse {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(52, 152, 219, 0.4);
+            animation: pulse 2s ease-out infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+
+        /* Scrollbar styling */
+        .search-results::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .search-results::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+
+        .search-results::-webkit-scrollbar-thumb {
+            background: #bdc3c7;
+            border-radius: 3px;
+        }
+
+        .search-results::-webkit-scrollbar-thumb:hover {
+            background: #95a5a6;
+        }
+
+        /* Legend */
+        .legend-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            max-width: 200px;
+        }
+
+        .legend-panel h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 6px 0;
+            font-size: 12px;
+            color: #555;
+        }
+
+        .legend-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+        }
+
+        .toggle-legend {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            color: #95a5a6;
+            font-size: 13px;
         }
     </style>
 </head>
 <body>
     <!-- Map container -->
     <div id="map"></div>
+
+    <!-- Search Panel -->
+    <div class="search-panel">
+        <h3><i class="fas fa-search"></i> Search Locations</h3>
+        <input type="text"
+               class="search-input"
+               id="searchInput"
+               placeholder="Type to search locations..."
+               autocomplete="off">
+        <div class="search-results" id="searchResults"></div>
+    </div>
+
+    <!-- Legend Panel -->
+    <div class="legend-panel">
+        <h4 class="toggle-legend" onclick="toggleLegendContent()">
+            <i class="fas fa-layer-group"></i> Categories
+            <i class="fas fa-chevron-up" id="legendToggle" style="float: right; font-size: 12px;"></i>
+        </h4>
+        <div id="legendContent"></div>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="info-panel">
+        <h4><i class="fas fa-info-circle"></i> Tips</h4>
+        <p><i class="fas fa-hand-pointer"></i> Click markers for details</p>
+        <p><i class="fas fa-arrows-alt"></i> Drag markers to move them</p>
+        <p><i class="fas fa-search"></i> Use search to find locations</p>
+    </div>
 
     <!-- Leaflet JavaScript -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -73,6 +387,72 @@
             minZoom: 3
         }).addTo(map);
 
+        // Store locations and markers
+        let locationsData = [];
+        let markersMap = new Map();
+
+        // Icon mapping
+        const iconMapping = {
+            'train': 'fa-train',
+            'bridge': 'fa-bridge',
+            'tower': 'fa-tower-observation',
+            'shopping': 'fa-shopping-cart',
+            'zoo': 'fa-paw',
+            'building': 'fa-building',
+            'museum': 'fa-landmark',
+            'city': 'fa-city',
+            'water': 'fa-water',
+            'beach': 'fa-umbrella-beach',
+            'airport': 'fa-plane'
+        };
+
+        // Create custom icon
+        function createCustomIcon(iconType, color) {
+            const iconClass = iconMapping[iconType] || 'fa-map-marker';
+            const html = `
+                <div class="custom-marker" style="background-color: ${color};">
+                    <i class="fas ${iconClass}"></i>
+                </div>
+            `;
+
+            return L.divIcon({
+                html: html,
+                className: '',
+                iconSize: [40, 40],
+                iconAnchor: [20, 40],
+                popupAnchor: [0, -40]
+            });
+        }
+
+        // Create popup content
+        function createPopupContent(location) {
+            const iconClass = iconMapping[location.icon] || 'fa-map-marker';
+            return `
+                <div class="popup-header">
+                    <div class="popup-icon" style="background-color: ${location.color};">
+                        <i class="fas ${iconClass}"></i>
+                    </div>
+                    <div class="popup-title">${location.name}</div>
+                </div>
+                <div class="popup-category">${location.category}</div>
+                <div class="popup-description">${location.description}</div>
+                <div class="popup-coordinates">
+                    📍 ${location.latitude.toFixed(4)}°N, ${location.longitude.toFixed(4)}°E
+                </div>
+                <div class="drag-hint">
+                    <i class="fas fa-hand-rock"></i> Drag marker to reposition
+                </div>
+            `;
+        }
+
+        // Update popup coordinates after drag
+        function updatePopupCoordinates(marker, location) {
+            const latlng = marker.getLatLng();
+            location.latitude = latlng.lat;
+            location.longitude = latlng.lng;
+            marker.setPopupContent(createPopupContent(location));
+        }
+
         // Function to load and display markers from JSON
         async function loadMarkers() {
             try {
@@ -83,29 +463,168 @@
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
-                const locations = await response.json();
+                locationsData = await response.json();
 
                 // Create a marker for each location
-                locations.forEach(location => {
-                    // Create marker
-                    const marker = L.marker([location.latitude, location.longitude])
-                        .addTo(map);
+                locationsData.forEach((location, index) => {
+                    // Create custom icon
+                    const customIcon = createCustomIcon(location.icon, location.color);
 
-                    // Create popup content with custom styling
-                    const popupContent = `
-                        <div class="popup-title">${location.name}</div>
-                        <div class="popup-description">${location.description}</div>
-                    `;
+                    // Create draggable marker
+                    const marker = L.marker(
+                        [location.latitude, location.longitude],
+                        {
+                            icon: customIcon,
+                            draggable: true,
+                            autoPan: true
+                        }
+                    ).addTo(map);
 
-                    // Bind popup to marker
+                    // Create popup content
+                    const popupContent = createPopupContent(location);
                     marker.bindPopup(popupContent);
+
+                    // Add drag event handlers
+                    marker.on('dragstart', function(e) {
+                        marker.closePopup();
+                    });
+
+                    marker.on('drag', function(e) {
+                        const latlng = marker.getLatLng();
+                        console.log(`Dragging ${location.name} to: ${latlng.lat.toFixed(4)}, ${latlng.lng.toFixed(4)}`);
+                    });
+
+                    marker.on('dragend', function(e) {
+                        updatePopupCoordinates(marker, location);
+                        marker.openPopup();
+                        console.log(`${location.name} moved to new position:`, marker.getLatLng());
+                    });
+
+                    // Store marker reference
+                    markersMap.set(location.name, { marker, location });
                 });
 
-                console.log(`Successfully loaded ${locations.length} locations`);
+                console.log(`Successfully loaded ${locationsData.length} locations`);
+
+                // Initialize search
+                initializeSearch();
+
+                // Generate legend
+                generateLegend();
 
             } catch (error) {
                 console.error('Error loading locations:', error);
                 alert('Failed to load location data. Please ensure locations.json exists and is properly formatted.');
+            }
+        }
+
+        // Initialize search functionality
+        function initializeSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const searchResults = document.getElementById('searchResults');
+
+            searchInput.addEventListener('input', function(e) {
+                const query = e.target.value.toLowerCase().trim();
+
+                if (query.length === 0) {
+                    searchResults.innerHTML = '';
+                    return;
+                }
+
+                // Filter locations
+                const filtered = locationsData.filter(location =>
+                    location.name.toLowerCase().includes(query) ||
+                    location.description.toLowerCase().includes(query) ||
+                    location.category.toLowerCase().includes(query)
+                );
+
+                // Display results
+                if (filtered.length === 0) {
+                    searchResults.innerHTML = '<div class="no-results">No locations found</div>';
+                    return;
+                }
+
+                searchResults.innerHTML = filtered.map(location => {
+                    const iconClass = iconMapping[location.icon] || 'fa-map-marker';
+                    return `
+                        <div class="search-result-item" onclick="flyToLocation('${location.name}')">
+                            <div class="result-icon" style="background-color: ${location.color};">
+                                <i class="fas ${iconClass}"></i>
+                            </div>
+                            <div class="result-info">
+                                <div class="result-name">${location.name}</div>
+                                <div class="result-category">${location.category}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            });
+
+            // Clear on outside click
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.search-panel')) {
+                    searchResults.innerHTML = '';
+                    searchInput.value = '';
+                }
+            });
+        }
+
+        // Fly to location on search result click
+        function flyToLocation(name) {
+            const item = markersMap.get(name);
+            if (item) {
+                map.flyTo([item.location.latitude, item.location.longitude], 15, {
+                    duration: 1.5
+                });
+
+                setTimeout(() => {
+                    item.marker.openPopup();
+                }, 1500);
+            }
+        }
+
+        // Generate legend
+        function generateLegend() {
+            const categories = {};
+
+            locationsData.forEach(location => {
+                if (!categories[location.category]) {
+                    categories[location.category] = {
+                        icon: location.icon,
+                        color: location.color,
+                        count: 0
+                    };
+                }
+                categories[location.category].count++;
+            });
+
+            const legendContent = document.getElementById('legendContent');
+            legendContent.innerHTML = Object.entries(categories)
+                .map(([category, data]) => {
+                    const iconClass = iconMapping[data.icon] || 'fa-map-marker';
+                    return `
+                        <div class="legend-item">
+                            <div class="legend-icon" style="background-color: ${data.color};">
+                                <i class="fas ${iconClass}"></i>
+                            </div>
+                            <span>${category} (${data.count})</span>
+                        </div>
+                    `;
+                })
+                .join('');
+        }
+
+        // Toggle legend visibility
+        function toggleLegendContent() {
+            const content = document.getElementById('legendContent');
+            const toggle = document.getElementById('legendToggle');
+
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                toggle.className = 'fas fa-chevron-up';
+            } else {
+                content.style.display = 'none';
+                toggle.className = 'fas fa-chevron-down';
             }
         }
 

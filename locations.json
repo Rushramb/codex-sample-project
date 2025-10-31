@@ -3,72 +3,108 @@
         "latitude": 51.9225,
         "longitude": 4.47917,
         "name": "Rotterdam Central Station",
-        "description": "Major transportation hub and architectural landmark in Rotterdam, serving as the main railway station."
+        "description": "Major transportation hub and architectural landmark in Rotterdam, serving as the main railway station.",
+        "icon": "train",
+        "category": "transportation",
+        "color": "#e74c3c"
     },
     {
         "latitude": 51.9194,
         "longitude": 4.4861,
         "name": "Erasmus Bridge",
-        "description": "Iconic cable-stayed bridge spanning the Nieuwe Maas river, nicknamed 'The Swan' for its distinctive asymmetric pylon."
+        "description": "Iconic cable-stayed bridge spanning the Nieuwe Maas river, nicknamed 'The Swan' for its distinctive asymmetric pylon.",
+        "icon": "bridge",
+        "category": "landmark",
+        "color": "#3498db"
     },
     {
         "latitude": 51.9054,
         "longitude": 4.4664,
         "name": "Euromast",
-        "description": "Observation tower standing at 185 meters tall, offering panoramic views of Rotterdam and the surrounding region."
+        "description": "Observation tower standing at 185 meters tall, offering panoramic views of Rotterdam and the surrounding region.",
+        "icon": "tower",
+        "category": "landmark",
+        "color": "#9b59b6"
     },
     {
         "latitude": 51.9185,
         "longitude": 4.4892,
         "name": "Markthal Rotterdam",
-        "description": "Architectural marvel combining a residential and office building with a large indoor food market featuring stunning artwork."
+        "description": "Architectural marvel combining a residential and office building with a large indoor food market featuring stunning artwork.",
+        "icon": "shopping",
+        "category": "shopping",
+        "color": "#f39c12"
     },
     {
         "latitude": 51.8979,
         "longitude": 4.4623,
         "name": "Rotterdam Zoo (Diergaarde Blijdorp)",
-        "description": "One of the oldest zoos in the Netherlands, home to over 2000 animals and featuring the Oceanium aquarium."
+        "description": "One of the oldest zoos in the Netherlands, home to over 2000 animals and featuring the Oceanium aquarium.",
+        "icon": "zoo",
+        "category": "entertainment",
+        "color": "#2ecc71"
     },
     {
         "latitude": 51.9116,
         "longitude": 4.4793,
         "name": "Cube Houses (Kubuswoningen)",
-        "description": "Innovative tilted cube-shaped houses designed by architect Piet Blom, now an iconic Rotterdam landmark."
+        "description": "Innovative tilted cube-shaped houses designed by architect Piet Blom, now an iconic Rotterdam landmark.",
+        "icon": "building",
+        "category": "landmark",
+        "color": "#e67e22"
     },
     {
         "latitude": 51.9067,
         "longitude": 4.3394,
         "name": "Schiedam Windmill Museum",
-        "description": "Historic windmills in Schiedam, including the tallest traditional windmills in the world."
+        "description": "Historic windmills in Schiedam, including the tallest traditional windmills in the world.",
+        "icon": "museum",
+        "category": "culture",
+        "color": "#16a085"
     },
     {
         "latitude": 51.9117,
         "longitude": 4.2856,
         "name": "Vlaardingen City Center",
-        "description": "Historic city center of Vlaardingen, known for its maritime heritage and fishing industry history."
+        "description": "Historic city center of Vlaardingen, known for its maritime heritage and fishing industry history.",
+        "icon": "city",
+        "category": "city",
+        "color": "#34495e"
     },
     {
         "latitude": 51.9297,
         "longitude": 4.5783,
         "name": "Capelle aan den IJssel",
-        "description": "Residential municipality in the Rijnmond region, known for its shopping center Slag om Blaak."
+        "description": "Residential municipality in the Rijnmond region, known for its shopping center Slag om Blaak.",
+        "icon": "city",
+        "category": "city",
+        "color": "#7f8c8d"
     },
     {
         "latitude": 51.8833,
         "longitude": 4.5333,
         "name": "Kralingse Plas",
-        "description": "Large recreational lake in Rotterdam, popular for water sports, cycling, and jogging trails."
+        "description": "Large recreational lake in Rotterdam, popular for water sports, cycling, and jogging trails.",
+        "icon": "water",
+        "category": "nature",
+        "color": "#3498db"
     },
     {
         "latitude": 51.8847,
         "longitude": 4.2903,
         "name": "Hoek van Holland",
-        "description": "Coastal town at the mouth of the Nieuwe Waterweg, serving as a ferry port to the UK and popular beach destination."
+        "description": "Coastal town at the mouth of the Nieuwe Waterweg, serving as a ferry port to the UK and popular beach destination.",
+        "icon": "beach",
+        "category": "nature",
+        "color": "#f1c40f"
     },
     {
         "latitude": 51.8603,
         "longitude": 4.3953,
         "name": "Rotterdam The Hague Airport",
-        "description": "Regional airport serving Rotterdam and The Hague, offering both business and leisure flights."
+        "description": "Regional airport serving Rotterdam and The Hague, offering both business and leisure flights.",
+        "icon": "airport",
+        "category": "transportation",
+        "color": "#e74c3c"
     }
 ]
